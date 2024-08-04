@@ -1,18 +1,23 @@
 import { connect } from "react-redux";
+import {
+  decrement,
+  increment,
+  setStep,
+} from "./../../store/slices/counterSlice";
 
 function Counter({ count, step, dispatch }) {
   const dec = () => {
-    const action = { type: "decrement" };
+    const action = decrement();
     dispatch(action);
   };
 
   const inc = () => {
-    const action = { type: "increment" };
+    const action = increment();
     dispatch(action);
   };
 
-  const setStep = ({ target: { value } }) => {
-    const action = { type: "setStep", payload: Number(value) };
+  const changeStep = ({ target: { value } }) => {
+    const action = setStep(Number(value));
     dispatch(action);
   };
 
@@ -22,14 +27,14 @@ function Counter({ count, step, dispatch }) {
       <span>{count}</span>
       <button onClick={inc}>+</button>
       <div>
-        <input type="number" value={step} onChange={setStep} />
+        <input type="number" value={step} onChange={changeStep} />
       </div>
     </div>
   );
 }
 
 function mapStateToProps(state) {
-  return state;
+  return state.counter;
 }
 
 const withAccessToStore = connect(mapStateToProps);
