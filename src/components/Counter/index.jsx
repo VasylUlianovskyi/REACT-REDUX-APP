@@ -5,21 +5,8 @@ import {
   setStep,
 } from "./../../store/slices/counterSlice";
 
-function Counter({ count, step, dispatch }) {
-  const dec = () => {
-    const action = decrement();
-    dispatch(action);
-  };
-
-  const inc = () => {
-    const action = increment();
-    dispatch(action);
-  };
-
-  const changeStep = ({ target: { value } }) => {
-    const action = setStep(Number(value));
-    dispatch(action);
-  };
+function Counter({ count, step, dec, inc, updateStep }) {
+  const changeStep = ({ target: { value } }) => updateStep(value);
 
   return (
     <div>
@@ -37,6 +24,14 @@ function mapStateToProps(state) {
   return state.counter;
 }
 
-const withAccessToStore = connect(mapStateToProps);
+function mapDispatchToProps(dispatch) {
+  return {
+    dec: () => dispatch(decrement()),
+    inc: () => dispatch(increment()),
+    updateStep: (value) => dispatch(setStep(Number(value))),
+  };
+}
+
+const withAccessToStore = connect(mapStateToProps, mapDispatchToProps);
 
 export default withAccessToStore(Counter);
